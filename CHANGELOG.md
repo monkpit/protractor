@@ -1,3 +1,276 @@
+# 6.0.0
+
+Selenium 4 removes the control flow and most of these changes are based on those changes. To see the full list of changes, please refer to selenium-webdriver's [CHANGELOG](https://github.com/SeleniumHQ/selenium/blob/master/javascript/node/selenium-webdriver/CHANGES.md)
+
+## Breaking changes
+
+- Control flow is removed and you should use async await to run your tests.
+- Other control flow related items:
+  - debugger, explore and element explorer have been removed
+  - jasminewd is no longer a dependency
+- ignoreSynchronization has been deprecated and you should use `waitForAngularEnabled`
+- Types for selenium-webdriver are currently in the types/ directory and are not complete. We are still missing some type definitions for selenium 4.
+- Actions API in selenium-webdriver have changed and they will break your test. Also we have not exported it yet since the type definitions are not complete.
+
+## Features
+
+- ([cf43651](https://github.com/angular/protractor/commit/cf43651bd7719b2811225bd7aa084aca973df1c8))
+  chore(debugprint): convert debugprint to TypeScript (#5074)
+
+- ([4672265](https://github.com/angular/protractor/commit/4672265773b415e80554f94bdcc9637340b70c25))
+  chore(browser): remove timing issues with restart and fork (#5085)
+
+  - remove .ready since forking should automatically return a browser
+  - getNewDriver should return a promised WebDriver that can be awaited
+  - fix interaction tests and local driver tests
+  - update unit tests for async await due to getNewDriver fix
+   closes #5031
+- ([b4dbcc2](https://github.com/angular/protractor/commit/b4dbcc2621e06fee9768b77d10ca3a3092b4d710))
+  chore(elementexplorer): remove explorer bin file (#5094)
+
+  closes #5092
+
+- ([3b8f263](https://github.com/angular/protractor/commit/3b8f263d744a5e0f2e07abdeaf77ade24ec43ed1))
+  chore(ignoreSynchornization): clean up to use waitForAngularEnabled (#5071)
+
+
+- ([ffa3519](https://github.com/angular/protractor/commit/ffa35196751766028feb7cda38cf4d43ead2a6f7))
+  chore(debugger): remove debugger and explore methods (#5070)
+
+- ([c9db3f3](https://github.com/angular/protractor/commit/c9db3f377c52a4cdd917c9b9d1e69808969ddf15))
+  chore(promises): remove q promises and webdriver promises (#5052)
+
+  - remove q promises and webdriver promises from the runner, launcher, plugins, and taskRunner
+  - add deprecated message to element explorer.
+  - add unhandledRejection
+  - update browser versions used in travis tests
+
+- ([e22065c](https://github.com/angular/protractor/commit/e22065ca6c91c6f49f9bbebcdc6351bdeb6e61ec))
+  chore(promises): clean up driver providers and browser control flow (#5034)
+
+  Driver providers and tests:
+
+  - Use native promises over q promises in driver providers
+  - Remove driverProviderUseExistingWebDriver since the generation of the selenium server is already
+  accomplished when providing a selenium address in driverProvider.ts. Also clean up docs and tests.
+
+  - Enabled the driverProviderLocal tests
+  - Clean up JSDocs for q.promise
+   Basic lib spec:
+
+  - Remove auto unwrap test for a WebElement. Reference PR #3471
+   Browser:
+
+  - Remove control flow from waitForAngularEnabled, waitForAngular, and angularAppRoot in the
+  Browser class.
+
+## Dependencies
+
+- ([96ae17c](https://github.com/angular/protractor/commit/96ae17cdd8acf6cd388ddf691453fdbd7e7dd60e))
+  deps(jasmine): upgrade jasmine 3.3 (#5102)
+
+- ([d213aa9](https://github.com/angular/protractor/commit/d213aa9aea2c10efb497202c6ec2aa98e416684c))
+   deps(selenium): upgrade to selenium 4 (#5095)
+
+  - elements workaround for WebElement.equals
+  - added a better unhandled rejection warning message in the launcher
+ control flow)bal function wrappers for mocha (these wrappers went away with
+  - fix the attach to session driver provider
+   Typing exported from Protractor:
+
+  - removed ActionSequence and EventEmitter (actions is currently missing)
+  - removed promise.Promise
+ fulfilled, filter, whener, delayed, createFlow, controlFlow, all,
+   Typings exported from WebDriver:
+
+  - removed attachToSession
+  - removed WebDriver instance methods: touchActions, call
+  - removed WebElement getSize and getLocation for getRect
+  - removed redefined global vars for testing
+  - In the typings, we are missing Options.setScriptTimeout method. This should not impact users
+  unless they are using the driver.manage() method.
+   Tests:
+
+  - fix element equals test
+  - add missing 'await' in colorList test that is causing unhandled promise rejections.
+  - remove control flow related tests
+  - disable the install test. Installing from "file:../../" is not working.
+  - fix the attach to session driver provider test to exit with a 1 if errors are encountered
+
+- ([509f1b2](https://github.com/angular/protractor/commit/509f1b25762c850ba82bc7527684edc8d8b52275))
+  deps(latest): upgrade to the gulp and typescript (#5089)
+
+  * deps(latest): upgrade to the gulp and typescript
+
+  - add in @types/loglevel and @types/yargs for webdriver-manager
+  - upgrade tslint clean up for tslint
+ supported by gulpp 4 and remove run sequence since this feature is
+  - remove compile to es5
+
+- ([2def202](https://github.com/angular/protractor/commit/2def2026de4f68cd5264afca4aa4cb51a9b550a3))
+  deps(webdriver-manager): use replacement (#5088)
+
+ publish a beta release of use webdriver-manager-replacement until we
+  webdriver-manager
+   closes #5087
+
+## Miscellaneous
+
+Minor fixes to remove the control flow completely and to prevent random execution order in Jasmine 3.
+
+- ([0a2809e](https://github.com/angular/protractor/commit/0a2809e62f34ed75632c80e1e792214e01eb0afe))
+  chore(types): fix types to use not @types/selenium-webdriver (#5127)
+
+  - Remove the USE_PROMISE_MANAGER test in spec/ts/basic
+  - Remove the check if we are using the control flow or not
+- ([84cdc50](https://github.com/angular/protractor/commit/84cdc50771b23f840bf62cb33f742dff3aaff990))
+  chore(jasmine): prevent random execution order in jasmine 3 (#5126)
+
+
+# 5.4.2
+
+## Features
+
+- ([db1b638](https://github.com/angular/protractor/commit/db1b6381d463c7cecf11dece2bf9412fecbd6f4d))
+  feat(saucelabs): add sauceRegion support for eu datacenters (#5083)
+
+  This change allows user to define the backend region from sauce via the `sauceRegion` property,
+  e.g.
+
+  ```js
+     sauceUser: process.env.SAUCE_USERNAME,
+     sauceKey: process.env.SAUCE_ACCESS_KEY,
+     sauceRegion: 'eu',
+  ```
+   Will run the test against `https://ondemand.eu-central-1.saucelabs.com:443/wd/hub/.`
+
+  ```js
+     sauceUser: process.env.SAUCE_USERNAME,
+     sauceKey: process.env.SAUCE_ACCESS_KEY,
+     sauceRegion: 'us',
+
+     // the default
+     sauceUser: process.env.SAUCE_USERNAME,
+     sauceKey: process.env.SAUCE_ACCESS_KEY,
+  ```
+   Will run the test against https://ondemand.saucelabs.com:443/wd/hub/
+
+##  Fixes
+
+- ([f5dbe13](https://github.com/angular/protractor/commit/f5dbe13ad6755ae812627d8056527e351db8b34c))
+  fix(deps): @types/node is now a dev dependency
+
+# 5.4.1
+
+## Features
+
+- ([7b08083](https://github.com/angular/protractor/commit/7b0808396458fbc2bd46c7e929f4effecb2a3f1e))
+  feat(driverProvider): Add useExistingWebDriver driver provider (#4756)
+
+- ([249e657](https://github.com/angular/protractor/commit/249e657baa605257c268f09078d56219776db9b1))
+  feat(example): add examples of usage protractor framework with angular-material components;
+  (#4891)
+
+## Fixes
+
+- ([39485ca](https://github.com/angular/protractor/commit/39485ca49ad751814ae112b224ae054e697e102f))
+  fix(typo): fixed typo in EC expectation alias (#4952)
+
+- ([07fefeb](https://github.com/angular/protractor/commit/07fefeb9636f8b3506df2eacbdb4ada29f50fbbd))
+  fix(browser): browser.navigate() return type. (#4932)
+
+  Changing return type of browser.navigate() to be Navigation instead of any.
+
+- ([0b1820c](https://github.com/angular/protractor/commit/0b1820c6c1d8b13e8fb2e64f27e4fe1d3cbcdd73))
+  fix(package-lock.json): update package-lock.json to match package.json. (#4931)
+
+## Dependencies
+
+- ([2632bb6](https://github.com/angular/protractor/commit/2632bb67c3ac7773e8b769cd5c5ee5c6d7b69f3d))
+  deps(webdriver_js_extender): update webdriver_js_extender to 2.1 (#4934)
+
+# 5.4.0
+
+## Features
+
+- ([03e2209](https://github.com/angular/protractor/commit/03e22092557240217bbbcf641476db08cc35df77))
+  feat(driverProvider) Adding browserstackProxy param in BrowserStack driverProvider (#4852)
+
+## Fixes
+
+- ([492230a](https://github.com/angular/protractor/commit/492230ab3445ca3aea3e60f55d27cb9825018ef9))
+  fix(generate_doc.sh): Use ES6 lib to compile down to ES5 (#4884)
+
+- ([ed955e5](https://github.com/angular/protractor/commit/ed955e56a839d7f69da43acb6755763220d3681d))
+  fix(travisCI): Update Node versions (#4847)
+
+- ([3702a70](https://github.com/angular/protractor/commit/3702a709fe251fed1de9ee1eab38593c2c371e94))
+  fix(local): Ensure webdriver.gecko.driver path is passed to Selenium (#4502)
+
+- ([1c6a1a8](https://github.com/angular/protractor/commit/1c6a1a82f03f2bd5911dfc37f365329d6f5acb60))
+  fix(circleci): Switch to using circleci v2 syntax and fix build errors (#4837)
+
+## Dependencies
+- ([056eec2](https://github.com/angular/protractor/commit/056eec23a7d1534d5e8624d42a6c9d1f3106cf5d))
+  deps(webdriver_js_extender): update webdriver_js_extender to 2.0 (#4882)
+  1. update webdriver_js_extender to 2.0
+  2. update selenium typing to 3.0.10
+
+# 5.3.2
+
+## Fixes
+
+- ([4e0a57c](https://github.com/angular/protractor/commit/4e0a57cff88b470dc5d05698a1341040f65dceb4))
+  fix(test): fix async tests
+
+  Increase the scripts timeout
+
+- ([c6703a5](https://github.com/angular/protractor/commit/c6703a5ea8ce7a837193ecf478c2096d8c6e99e9))
+  fix(doc): Spelling updates to comments in plugin.ts(#4797)
+
+  Updated some of the spelling errors/ punctuation mistakes for clearer understanding.
+- ([76324b8](https://github.com/angular/protractor/commit/76324b80063152ce67c164b6f048682e71771bb6))
+  fix(cli): add more verbose warning if '_debugger' module cannot be found. (#4800)
+
+
+- ([f8f490a](https://github.com/angular/protractor/commit/f8f490a82d0ed6965248e1f78bd2ac7ca91548d9))
+  updated CHANGELOG based on sauceSeleniumAddress and sauceSeleniumUseHttp (#4793)
+
+
+- ([6290f27](https://github.com/angular/protractor/commit/6290f27720816dd574ff7a1eccfec6ade1539b71))
+  fix(generate-docs): fix generate-docs.sh. (#4765)
+
+  Ignore generated unstaged files before checking out to new branch; otherwise, the git checkout
+  will fail.
+
+## Dependencies
+
+- ([948c7f2](https://github.com/angular/protractor/commit/948c7f267feebfd4c6997d8bc02485b573100197))
+  fix(deps): Update saucelabs for security issue. (#4805)
+
+
+# 5.3.1
+
+## Features
+
+- ([cc2234c](https://github.com/angular/protractor/commit/cc2234c762268acab85b6e5d1c13b6480738651b))
+  feat(logger): Add log level configuration (#1451) (#4068)
+
+## Fixes
+
+- ([c63b99e](https://github.com/angular/protractor/commit/c63b99ee029b6730e4b0702ac7c22b4076049e2a))
+  fix(grep): change excluded tests to disabled instead of pending (#4673)
+
+- ([9348ccf](https://github.com/angular/protractor/commit/9348ccfe65a0488d2929f624e70aef585f72e3ab))
+  docs(page_objects): Remove unnecessary "await" and "async" (#4732)
+
+- ([4898db0](https://github.com/angular/protractor/commit/4898db0940e0c0084e7c538a40986f94dc21e7ec))
+  docs(plugins) add protractor-cucumber-steps plugin to plugins.md (#4721)
+
+- ([a7411b6](https://github.com/angular/protractor/commit/a7411b6a156d45ec2e61f1b6ec951a19d854f5b2))
+  docs(page_objects): Add async / await example (#4675)
+
+
 # 5.3.0
 
 ## Features
@@ -31,7 +304,6 @@
 - ([02746dd](https://github.com/angular/protractor/commit/02746dd37726b2647f8f8dbeb1152cd7f902acb0))
   fix(browser): Add space after full stop in error message. (#4594)
   Linkifiers interpret the ".If" at the end of the URL as part of the URL.
-)
 
 - ([7f968e0](https://github.com/angular/protractor/commit/7f968e022a7f7ebcda8955651f2907c1a25ecc22))
   fix(direct): Use config's geckoDriver when specified (#4554)
@@ -55,7 +327,7 @@
   3. add lock file
 
 # 5.2.2
- ## Fixes
+## Fixes
 - ([b3c7404](https://github.com/angular/protractor/commit/b3c7404258db55a71e7bc4520973c0665cb0ff06))
   Revert "fix(jasmine): Update Jasmine to support Node8 async/await (#4608)"
   This reverts commit 5d13b00bca651227eb55616363f7d7eb8a91f8e8.
@@ -85,6 +357,7 @@
   Update to the latest blocking proxy (#4546)
 
 ## Breaking Changes
+
 - ([5d13b00](https://github.com/angular/protractor/commit/5d13b00bca651227eb55616363f7d7eb8a91f8e8))
   fix(jasmine): Update Jasmine to support Node8 async/await (#4608)
 
@@ -163,6 +436,9 @@
 - ([dd2ccbb](https://github.com/angular/protractor/commit/dd2ccbb1b73b7c90647837cd1c4f6b16b3f6b0ac))
   feat(saucelabs): Add Sauce Labs protocol customization support
 
+  New option `sauceSeleniumUseHttp` available in `protractor.conf.js`
+  If true, uses 'http' instead of 'https' to connect to Sauce Labs defined by `sauceSeleniumAddress`
+
 ## Fixes
 
 - ([1a47076](https://github.com/angular/protractor/commit/1a47076875395648038a39fcd258a77bfcabe05c))
@@ -232,6 +508,12 @@
   - move noCF tests to install and fix reference to protractor
   - changed element.ts to not use keyof
   - remove gulp task tsc:spec
+
+## Breaking Changes
+
+- The protocol for a Sauce Labs selenium relay (sauceSeleniumAddress in protractor.conf.js)
+  is 'https' (previously used 'http'). The protocol is not configurable in this version.
+
 
 # 5.1.0
 
